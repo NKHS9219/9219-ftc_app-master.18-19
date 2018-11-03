@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class Auto extends LinearOpMode
 {
     //Declaring Motors
-    public DcMotor LeftTrack;
-    public DcMotor RightTrack;
+    private DcMotor LeftTrack;
+    private DcMotor RightTrack;
 
     public void runOpMode() throws InterruptedException
     {
@@ -33,15 +33,24 @@ public class Auto extends LinearOpMode
 
         ResetEncoders();
         TankForward(0.5, 1000);
+        Thread.sleep(1000);
+        TankBackward(0.5, 1000);
+        Thread.sleep(1000);
+        TankForward(1,1000);
+        Thread.sleep(1000);
+        TankBackward(1,1000);
+        Thread.sleep(1000);
+        TankForward(0.5,500);
+        Thread.sleep(1000);
+        TankBackward(.5,500);
+        Thread.sleep(1000);
+        TankForward(1,500);
+        Thread.sleep(1000);
+        TankBackward(1,500);
+        }
 
 
-
-
-
-
-    }
-
-    public void TankForward(double power, int target)
+    private void TankForward(double power, int target)
     {
         ResetEncoders();
         LeftTrack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -54,10 +63,11 @@ public class Auto extends LinearOpMode
             RightTrack.setPower(power);
         }
 
-
+        LeftTrack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        RightTrack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void TankBackward(double power,int target)
+    private void TankBackward(double power,int target)
     {
         ResetEncoders();
         LeftTrack.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -71,7 +81,7 @@ public class Auto extends LinearOpMode
         }
     }
 
-    public void ResetEncoders()
+    private void ResetEncoders()
     {
         LeftTrack.setMode((DcMotor.RunMode.STOP_AND_RESET_ENCODER));
         RightTrack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

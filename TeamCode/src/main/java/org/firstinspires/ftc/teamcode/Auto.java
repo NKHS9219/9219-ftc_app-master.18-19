@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 
 @Autonomous(name="Auto")
 public class Auto extends LinearOpMode
@@ -11,6 +12,9 @@ public class Auto extends LinearOpMode
     private DcMotor LeftTrack;
     private DcMotor RightTrack;
 
+    //Declaring Color Sensors
+    private ColorSensor ColorSensor;
+
     public void runOpMode() throws InterruptedException
     {
 
@@ -18,8 +22,11 @@ public class Auto extends LinearOpMode
         LeftTrack = hardwareMap.dcMotor.get("LeftTrack");
         RightTrack = hardwareMap.dcMotor.get("RightTrack");
 
+        //Initializing Color Sensors
+        ColorSensor = hardwareMap.colorSensor.get("ColorSensor");
+
         //Reversing Motors
-        RightTrack.setDirection(DcMotor.Direction.REVERSE);
+        LeftTrack.setDirection(DcMotor.Direction.REVERSE);
 
         telemetry.addData("Mode", "waiting");
         telemetry.update();

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@TeleOp(name="HookTest")
+@TeleOp(name="Hook Test")
 public class HookTest extends LinearOpMode
 {
     //Declaring Hook Servo
@@ -36,14 +36,4 @@ public class HookTest extends LinearOpMode
             idle();
         }
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

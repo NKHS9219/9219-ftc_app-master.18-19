@@ -13,3 +13,12 @@
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation project(':openCVLibrary3')
+    implementation project(':DogeCV')
+}

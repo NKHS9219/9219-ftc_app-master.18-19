@@ -32,15 +32,12 @@ package org.firstinspires.ftc.teamcode;
 import com.disnodeteam.dogecv.CameraViewDisplay;
 import com.disnodeteam.dogecv.DogeCV;
 import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
-import com.disnodeteam.dogecv.detectors.roverrukus.SamplingOrderDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-
 @Autonomous(name="Autonomous9219Depot")
-
-public abstract class GoldAlignExample extends LinearOpMode
+public class GoldAlignExample extends LinearOpMode
 {
     // Detector object
     private GoldAlignDetector detector;
@@ -51,9 +48,8 @@ public abstract class GoldAlignExample extends LinearOpMode
     public DcMotor FL;
     public DcMotor FR;
     public DcMotor LA;
-    public DcMotor CF;
+    public DcMotor CL;
 
-    @Override
     public void runOpMode() throws InterruptedException
     {
 
@@ -63,7 +59,7 @@ public abstract class GoldAlignExample extends LinearOpMode
         FL = hardwareMap.dcMotor.get("FL");
         FR = hardwareMap.dcMotor.get("FR");
         LA = hardwareMap.dcMotor.get("LA");
-        CF = hardwareMap.dcMotor.get("CF");
+        CL = hardwareMap.dcMotor.get("CL");
 
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
 
@@ -85,19 +81,30 @@ public abstract class GoldAlignExample extends LinearOpMode
         detector.ratioScorer.perfectRatio = 1.0; // Ratio adjustment
 
         detector.enable(); // Start the detector!
-        telemetry.addData("IsAigned", detector.getAligned());//Seeing if the gold is aligned with the robot.
+        telemetry.addData("IsAligned", detector.getAligned());//Seeing if the gold is aligned with the robot.
         telemetry.addData("X Pos", detector.getXPosition());//Getting X position of the gold. (Help with the alignment)
 
         waitForStart();
 
-        BR.setPower(1);
-        BL.setPower(1);
-        FR.setPower(1);
-        FL.setPower(1);
-        Thread.sleep(15000);
+        RaiseAndLower(1, 1120);
+        if (detector.getXPosition() > 400 && 200 > detector.getXPosition())// Gold aligned close to center
+            {
+                FBMove(1, 2000);
+            }
+            else if (detector.getXPosition() > 410)// Gold too far to the right
+            {
+                FBMove(1,2000);
+            }
+            else if (detector.getXPosition() < 210)// Gold too far to the left
+            {
+                FBMove(1,2000);
+            }
+            else//Gold can't be seen change position
+            {
+                FBMove(1,2000);
+            }
 
-        detector.disable();
-        idle();
+            detector.disable();
     }
 
     public void FBMove(double power, int target)
@@ -112,6 +119,18 @@ public abstract class GoldAlignExample extends LinearOpMode
             BR.setPower(power);
         }
         RunWithoutEncoders();
+    }
+
+    public void RaiseAndLower(double power, int target)
+    {
+        ResetEncoders();
+        LA.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        LA.setTargetPosition(target);
+        while(LA.isBusy())
+        {
+            LA.setPower(power);
+        }
+        LA.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     public void AllRunToPos()

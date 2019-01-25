@@ -15,9 +15,8 @@ public class TeleOp1ControllerStandardDrive extends LinearOpMode
     public DcMotor FL;
     public DcMotor FR;
     public DcMotor LA;
-    public DcMotor CF;
-    //public DcMotor CG;
-    //public DcMotor CL;
+    public DcMotor CG;
+    public DcMotor CL;
 
     //Declaring Servos
     public Servo HK;
@@ -32,9 +31,8 @@ public class TeleOp1ControllerStandardDrive extends LinearOpMode
         FL = hardwareMap.dcMotor.get("FL");
         FR = hardwareMap.dcMotor.get("FR");
         LA = hardwareMap.dcMotor.get("LA");
-        CF = hardwareMap.dcMotor.get("CF");
-        //CG = hardwareMap.dcMotor.get("CG");
-        //CL = hardwareMap.dcMotor.get("CL");
+        CG = hardwareMap.dcMotor.get("CG");
+        CL = hardwareMap.dcMotor.get("CL");
 
         //Initializing Servos
         HK = hardwareMap.servo.get("HK");
@@ -48,18 +46,86 @@ public class TeleOp1ControllerStandardDrive extends LinearOpMode
 
         while (opModeIsActive())
         {
-            FL.setPower(gamepad1.left_stick_y-gamepad1.right_stick_x);
-            BL.setPower(gamepad1.left_stick_y-gamepad1.right_stick_x);
-            BR.setPower(gamepad1.left_stick_y+gamepad1.right_stick_x);
-            FR.setPower(gamepad1.left_stick_y+gamepad1.right_stick_x);
+            FL.setPower(gamepad1.left_stick_y+gamepad1.right_stick_x);
+            BL.setPower(gamepad1.left_stick_y+gamepad1.right_stick_x);
+            BR.setPower(gamepad1.left_stick_y-gamepad1.right_stick_x);
+            FR.setPower(gamepad1.left_stick_y-gamepad1.right_stick_x);
+            if(gamepad1.x)
+            {
+                MD.setPosition(.1);
+            }
+            else
+            {
+                MD.setPosition(0);
+            }
+            if (gamepad1.y)
+            {
+                HK.setPosition(0.3);
+            }
+            else
+            {
+                HK.setPosition(0);
+            }
+            if(gamepad1.dpad_left)
+            {
+                MD.setDirection(Servo.Direction.REVERSE);
+            }
+            else
+            {
+                MD.setDirection(Servo.Direction.FORWARD);
+            }
+            if(gamepad1.dpad_right)
+            {
+                HK.setDirection(Servo.Direction.REVERSE);
+            }
+            else
+            {
+                HK.setDirection(Servo.Direction.FORWARD);
+            }
             if(gamepad1.dpad_up)
+            {
+                CL.setPower(1);
+            }
+            else
+            {
+                CL.setPower(0);
+            }
+            if(gamepad1.dpad_down)
+            {
+                CL.setPower(-1);
+            }
+            else
+            {
+                CL.setPower(0);
+            }
+            if(gamepad1.left_bumper)
+            {
+                CG.setPower(1);
+            }
+            else
                 {
-                    LA.setPower(1);
+                    CG.setPower(0);
                 }
-            else if(gamepad1.dpad_down)
-                 {
-                    LA.setPower(-1);
-                 }
+                if (gamepad1.right_bumper)
+                {
+                    CG.setPower(-1);
+                }
+                else
+                {
+                    CG.setPower(0);
+                }
+            if(gamepad1.a)
+            {
+                LA.setPower(1);
+            }
+            else
+                {
+                    LA.setPower(0);
+                }
+            if(gamepad1.b)
+            {
+                LA.setPower(-1);
+            }
             else
                 {
                     LA.setPower(0);

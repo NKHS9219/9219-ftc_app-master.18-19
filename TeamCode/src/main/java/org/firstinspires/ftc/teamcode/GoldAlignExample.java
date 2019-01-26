@@ -35,6 +35,7 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Autonomous(name="Autonomous9219Depot")
 public class GoldAlignExample extends LinearOpMode
@@ -61,6 +62,9 @@ public class GoldAlignExample extends LinearOpMode
         LA = hardwareMap.dcMotor.get("LA");
         CL = hardwareMap.dcMotor.get("CL");
 
+        FR.setDirection(DcMotor.Direction.REVERSE);
+        BR.setDirection(DcMotor.Direction.REVERSE);
+
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
 
         // Set up detector
@@ -86,22 +90,11 @@ public class GoldAlignExample extends LinearOpMode
 
         waitForStart();
 
-        RaiseAndLower(1, 1120);
-        if (detector.getXPosition() > 400 && 200 > detector.getXPosition())// Gold aligned close to center
+        ResetEncoders();
+        sleep(1000);
+        if (detector.isFound())// Gold aligned close to center
             {
-                FBMove(1, 2000);
-            }
-            else if (detector.getXPosition() > 410)// Gold too far to the right
-            {
-                FBMove(1,2000);
-            }
-            else if (detector.getXPosition() < 210)// Gold too far to the left
-            {
-                FBMove(1,2000);
-            }
-            else//Gold can't be seen change position
-            {
-                FBMove(1,2000);
+                FBMove(1, 20);
             }
 
             detector.disable();
@@ -147,6 +140,8 @@ public class GoldAlignExample extends LinearOpMode
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         FR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LA.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        CL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void RunWithoutEncoders()

@@ -45,13 +45,7 @@ public class Autonomous9219Crater extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        BR.setPower(1);
-        BL.setPower(1);
-        FL.setPower(1);
-        FR.setPower(1);
-        sleep(5000);
-        FBMove(1, 2000);
-        sleep(500);
+
     }
 
     public void FBMove(double power, int target)

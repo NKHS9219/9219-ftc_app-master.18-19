@@ -1,32 +1,3 @@
-/* Copyright (c) 2017 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package org.firstinspires.ftc.teamcode;
 
 import com.disnodeteam.dogecv.CameraViewDisplay;
@@ -35,7 +6,7 @@ import com.disnodeteam.dogecv.detectors.roverrukus.GoldAlignDetector;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name="Autonomous9219Depot")
 public class GoldAlignExample extends LinearOpMode
@@ -50,9 +21,14 @@ public class GoldAlignExample extends LinearOpMode
     public DcMotor FR;
     public DcMotor LA;
     public DcMotor CL;
+    public DcMotor CF;
 
-    public void runOpMode() throws InterruptedException
-    {
+    public Servo HK;
+
+    private double goldXPos;
+
+
+    public void runOpMode() throws InterruptedException {
 
         //Initializing Motors
         BR = hardwareMap.dcMotor.get("BR");
@@ -61,9 +37,13 @@ public class GoldAlignExample extends LinearOpMode
         FR = hardwareMap.dcMotor.get("FR");
         LA = hardwareMap.dcMotor.get("LA");
         CL = hardwareMap.dcMotor.get("CL");
+        CF = hardwareMap.dcMotor.get("CF");
 
-        FR.setDirection(DcMotor.Direction.REVERSE);
-        BR.setDirection(DcMotor.Direction.REVERSE);
+        HK = hardwareMap.servo.get("HK");
+
+        FL.setDirection(DcMotor.Direction.REVERSE);
+        BL.setDirection(DcMotor.Direction.REVERSE);
+        LA.setDirection(DcMotor.Direction.REVERSE);
 
         telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
 
@@ -89,18 +69,39 @@ public class GoldAlignExample extends LinearOpMode
         telemetry.addData("X Pos", detector.getXPosition());//Getting X position of the gold. (Help with the alignment)
 
         waitForStart();
-
-        ResetEncoders();
-        sleep(1000);
-        if (detector.isFound())// Gold aligned close to center
+        //THOMAS ONLY WORK FROM HERE BELOW TO THE "detector.disable", no changes needed above.
+        LA.setPower(0.5);//Linear Actuator Raising.
+        Thread.sleep(2500);//If you want to go farther down increase this by a tiny bit.
+        HK.setPosition(0.7);//Hook opening.
+        Thread.sleep(2000);//If you want the hook to open more increase this by A LITTLE BIT.
+        RightTurn(0.5, 10);
+        if (detector.isFound())// Gold aligned either center or right.
+        {
+            if(detector.getXPosition() > 600)//Finding the x position if the block is found, if the x position. You may have to mess around with the 600 if it's not noticing it on the right.
             {
-                FBMove(1, 20);
+                RightTurn(0.5,500);//Turning a bit more to the right to make sure it's aligned.
+                FBMove(1,800);//Moving forwards to HOPEFULLY hit the block.
             }
+            else//If the block is in the center it will move to this if the x position found on the phone is less then 600.
+            {
+                LeftTurn(0.3,350);//Turning to the left
+                FBMove(1,800);//Moving forward to hit the center block.
+            }
+        }
+        else// If the gold is not aligned on the center or right then it must be on the left.
+        {
+            LeftTurn(0.5,100);//Aligning to the left.
+            if(detector.isFound())//Checking to see if the gold block is there, if needed add an else for motion either farther left or to the right to fix alignment.
+            {
+            FBMove(0.5,500);//forward motion to push the gold block if it is on the left.
+            }
+            //If needed add the else here.
+        }
 
-            detector.disable();
+        detector.disable();
     }
 
-    public void FBMove(double power, int target)
+    public void FBMove(double power, int target)//Forward and backwards motion, target is encoder values.
     {
         ResetEncoders();
         AllRunToPos();
@@ -114,7 +115,7 @@ public class GoldAlignExample extends LinearOpMode
         RunWithoutEncoders();
     }
 
-    public void RaiseAndLower(double power, int target)
+    public void RaiseAndLower(double power, int target)//Linear Actuator Motion
     {
         ResetEncoders();
         LA.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -126,7 +127,7 @@ public class GoldAlignExample extends LinearOpMode
         LA.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void AllRunToPos()
+    public void AllRunToPos()//Setting motors to the mode RUN_TO_POSITION (encoder position/ value)
     {
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -134,7 +135,7 @@ public class GoldAlignExample extends LinearOpMode
         BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    public void ResetEncoders()
+    public void ResetEncoders()//Resets all the encoder's values, make sure to set the mode of the motor back to RUN_TO_POSITION
     {
         FL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         BL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -142,9 +143,10 @@ public class GoldAlignExample extends LinearOpMode
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         LA.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         CL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        CF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
-    public void RunWithoutEncoders()
+    public void RunWithoutEncoders()//Makes it so the motor can run to position, doesn't require you to add this if you are making a motor run for power for time.
     {
         FL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         BL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -152,7 +154,7 @@ public class GoldAlignExample extends LinearOpMode
         BR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
-    public void RightTurn(double power, int target)
+    public void RightTurn(double power, int target)//Made for the robot to turn right, if the robot turns left when using RightTurn, make the FR and BR positive and the FL and BL negative.
     {
         ResetEncoders();
         AllRunToPos();
@@ -166,7 +168,7 @@ public class GoldAlignExample extends LinearOpMode
         RunWithoutEncoders();
     }
 
-    public void LeftTurn(double power, int target)
+    public void LeftTurn(double power, int target)//Made for the robot to turn left, if the robot turns right when using LeftTurn, make the FL and BL positive and FR and BR negative.
     {
         ResetEncoders();
         AllRunToPos();

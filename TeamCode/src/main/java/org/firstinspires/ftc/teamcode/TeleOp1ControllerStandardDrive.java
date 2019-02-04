@@ -3,10 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name="TeleOp1ControllerStandardDrive")
+@TeleOp(name="TeleOp1Controller")
 public class TeleOp1ControllerStandardDrive extends LinearOpMode
 {
 
@@ -42,18 +41,18 @@ public class TeleOp1ControllerStandardDrive extends LinearOpMode
         MD = hardwareMap.servo.get("MD");
 
         //Reversing Motors
-        BR.setDirection(DcMotor.Direction.REVERSE);
-        FR.setDirection(DcMotor.Direction.REVERSE);
+        BL.setDirection(DcMotor.Direction.REVERSE);
+        FL.setDirection(DcMotor.Direction.REVERSE);
         CF.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
 
         while (opModeIsActive())
         {
-            FL.setPower(gamepad1.left_stick_y-gamepad1.right_stick_x);
-            BL.setPower(gamepad1.left_stick_y-gamepad1.right_stick_x);
-            BR.setPower(gamepad1.left_stick_y+gamepad1.right_stick_x);
-            FR.setPower(gamepad1.left_stick_y+gamepad1.right_stick_x);
+            FL.setPower(gamepad1.left_stick_y+gamepad1.right_stick_x);
+            BL.setPower(gamepad1.left_stick_y+gamepad1.right_stick_x);
+            BR.setPower(gamepad1.left_stick_y-gamepad1.right_stick_x);
+            FR.setPower(gamepad1.left_stick_y-gamepad1.right_stick_x);
             if(gamepad1.x)
             {
                 MD.setPosition(0);

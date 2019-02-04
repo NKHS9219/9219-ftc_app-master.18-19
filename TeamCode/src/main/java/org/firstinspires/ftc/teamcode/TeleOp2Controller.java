@@ -80,7 +80,7 @@ public class TeleOp2Controller extends LinearOpMode
 
             if(gamepad2.left_bumper)
             {
-                CG.setPower(0.6);
+                CG.setPower(1);
             }
             else
                 {
@@ -89,7 +89,7 @@ public class TeleOp2Controller extends LinearOpMode
 
                 if (gamepad2.right_bumper)
                 {
-                    CG.setPower(-0.6);
+                    CG.setPower(-1);
                 }
                 else
                 {

@@ -73,7 +73,7 @@ public class GoldAlignExample extends LinearOpMode
         LA.setPower(0.5);//Linear Actuator Raising.
         Thread.sleep(2500);//If you want to go farther down increase this by a tiny bit.
         HK.setPosition(0.7);//Hook opening.
-        Thread.sleep(2000);//If you want the hook to open more increase this by A LITTLE BIT.
+        Thread.sleep(2250);//If you want the hook to open more increase this by A LITTLE BIT.
         RightTurn(0.5, 10);
         if (detector.isFound())// Gold aligned either center or right.
         {

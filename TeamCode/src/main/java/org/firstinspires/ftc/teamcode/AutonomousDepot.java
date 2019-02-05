@@ -37,7 +37,7 @@ public class AutonomousDepot extends LinearOpMode
         FR = hardwareMap.dcMotor.get("FR");
         LA = hardwareMap.dcMotor.get("LA");
         CL = hardwareMap.dcMotor.get("CL");
-        CF = hardwareMap.dcMotor.get("CF");
+        CR = hardwareMap.dcMotor.get("CR");
 
         HK = hardwareMap.servo.get("HK");
 
@@ -144,7 +144,7 @@ public class AutonomousDepot extends LinearOpMode
         BR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         LA.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         CL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        CF.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        CR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
 
     public void RunWithoutEncoders()//Makes it so the motor can run to position, doesn't require you to add this if you are making a motor run for power for time.

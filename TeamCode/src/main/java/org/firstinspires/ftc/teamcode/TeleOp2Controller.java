@@ -33,7 +33,7 @@ public class TeleOp2Controller extends LinearOpMode
         LA = hardwareMap.dcMotor.get("LA");
         CG = hardwareMap.dcMotor.get("CG");
         CL = hardwareMap.dcMotor.get("CL");
-        CF = hardwareMap.dcMotor.get("CR");
+        CR = hardwareMap.dcMotor.get("CR");
 
         //Initializing Servos
         HK = hardwareMap.servo.get("HK");

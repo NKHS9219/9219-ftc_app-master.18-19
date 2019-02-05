@@ -17,11 +17,10 @@ public class TeleOp2Controller extends LinearOpMode
     public DcMotor LA;
     public DcMotor CG;
     public DcMotor CL;
-    public DcMotor CF;
+    public DcMotor CR;
 
     //Declaring Servos
     public Servo HK;
-    public Servo MD;
 
     public void runOpMode() throws InterruptedException
     {
@@ -34,16 +33,15 @@ public class TeleOp2Controller extends LinearOpMode
         LA = hardwareMap.dcMotor.get("LA");
         CG = hardwareMap.dcMotor.get("CG");
         CL = hardwareMap.dcMotor.get("CL");
-        CF = hardwareMap.dcMotor.get("CF");
+        CF = hardwareMap.dcMotor.get("CR");
 
         //Initializing Servos
         HK = hardwareMap.servo.get("HK");
-        MD = hardwareMap.servo.get("MD");
 
         //Reversing Motors
         BL.setDirection(DcMotor.Direction.REVERSE);
         FL.setDirection(DcMotor.Direction.REVERSE);
-        CF.setDirection(DcMotor.Direction.REVERSE);
+        CR.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
 
@@ -53,14 +51,6 @@ public class TeleOp2Controller extends LinearOpMode
             BL.setPower(gamepad1.left_stick_y+gamepad1.right_stick_x);
             BR.setPower(gamepad1.left_stick_y-gamepad1.right_stick_x);
             FR.setPower(gamepad1.left_stick_y-gamepad1.right_stick_x);
-            if(gamepad2.x)
-            {
-                MD.setPosition(0);
-            }
-            else
-            {
-                MD.setPosition(.2);
-            }
 
             if(gamepad2.dpad_right)
             {
@@ -116,23 +106,23 @@ public class TeleOp2Controller extends LinearOpMode
             if(gamepad2.dpad_up)
             {
                 CL.setPower(1);
-                CF.setPower(1);
+                CR.setPower(1);
             }
             else
             {
                 CL.setPower(0);
-                CF.setPower(0);
+                CR.setPower(0);
             }
 
             if(gamepad2.dpad_down)
             {
                 CL.setPower(-1);
-                CF.setPower(-1);
+                CR.setPower(-1);
             }
             else
             {
                 CL.setPower(0);
-                CF.setPower(0);
+                CR.setPower(0);
             }
             idle();
         }

@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name ="Autonomous 9219 Crater")
-public class Autonomous9219Crater extends LinearOpMode {
+@Autonomous(name ="AutonomousCrater")
+public class AutonomousCrater extends LinearOpMode {
 
 
     //Declaring Motors
@@ -17,10 +17,10 @@ public class Autonomous9219Crater extends LinearOpMode {
     public DcMotor LA;
     public DcMotor CG;
     public DcMotor CL;
+    public DcMotor CR;
 
     //Declaring Servos
     public Servo HK;
-    public Servo MD;
 
     public void runOpMode()
     {
@@ -32,16 +32,20 @@ public class Autonomous9219Crater extends LinearOpMode {
         LA = hardwareMap.dcMotor.get("LA");
         CG = hardwareMap.dcMotor.get("CG");
         CL = hardwareMap.dcMotor.get("CL");
+        CR = hardwareMap.dcMotor.get("CR");
 
         //Initializing Servos
         HK = hardwareMap.servo.get("HK");
-        MD = hardwareMap.servo.get("MD");
 
         //Reversing Motors
-        BR.setDirection(DcMotor.Direction.REVERSE);
-        FR.setDirection(DcMotor.Direction.REVERSE);
+        BL.setDirection(DcMotor.Direction.REVERSE);
+        FL.setDirection(DcMotor.Direction.REVERSE);
+        CR.setDirection(DcMotor.Direction.REVERSE);
 
-        telemetry.addData("Encoder Values", BR.getCurrentPosition());
+        telemetry.addData("Back Right Encoder Value", BR.getCurrentPosition());
+        telemetry.addData("Back Left Encoder Value", BL.getCurrentPosition());
+        telemetry.addData("Front Right Encoder Value", FR.getCurrentPosition());
+        telemetry.addData("Front Left Encoder Value", FR.getCurrentPosition());
         telemetry.update();
         waitForStart();
 

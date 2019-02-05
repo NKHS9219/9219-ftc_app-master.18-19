@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@Autonomous(name="Autonomous9219Depot")
-public class GoldAlignExample extends LinearOpMode
+@Autonomous(name="AutonomousDepot")
+public class AutonomousDepot extends LinearOpMode
 {
     // Detector object
     private GoldAlignDetector detector;
@@ -21,7 +21,7 @@ public class GoldAlignExample extends LinearOpMode
     public DcMotor FR;
     public DcMotor LA;
     public DcMotor CL;
-    public DcMotor CF;
+    public DcMotor CR;
 
     public Servo HK;
 
@@ -44,8 +44,9 @@ public class GoldAlignExample extends LinearOpMode
         FL.setDirection(DcMotor.Direction.REVERSE);
         BL.setDirection(DcMotor.Direction.REVERSE);
         LA.setDirection(DcMotor.Direction.REVERSE);
+        CR.setDirection(DcMotor.Direction.REVERSE);
 
-        telemetry.addData("Status", "DogeCV 2018.0 - Gold Align Example");
+        telemetry.addData("Status", "DogeCV 2018.0 - AutonomousDepot");
 
         // Set up detector
         detector = new GoldAlignDetector(); // Create detector
